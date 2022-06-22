@@ -1,0 +1,69 @@
+---
+title: "plotly_hw"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# examples of using plotly 
+
+goal: create two interactive plots
+
+we're going to use the "Instacart", "NY NOAA", "NYC Restaurant Inspections" data
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+```
+
+# Load and clean data
+
+```{r}
+# 134 aisles
+load(file='instacart.rda')
+instacart %>% 
+  count(aisle) %>% 
+  filter(n > 10000) %>% 
+  arrange(desc(n))
+
+instacart_sub = 
+  instacart %>% 
+  filter(
+    aisle %in% c("fresh vegetables", "fresh fruits", "packaged vegetables fruits")) %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(rank = min_rank(desc(n))) %>% 
+  filter(rank < 4) %>% 
+  arrange(desc(n)) %>% 
+  as_tibble()
+  
+  
+```
+
+# scatter plot
+
+```{r}
+instacart_sub %>% 
+  mutate(product_name = fct_reorder(product_name, desc(n))) %>% 
+  plot_ly(x = ~product_name, y = ~n, color = ~aisle, 
+          type = "scatter", mode = "markers")
+```
+
+# bar plot
+
+```{r}
+instacart_sub %>% 
+  mutate(product_name = fct_reorder(product_name, desc(n))) %>% 
+  plot_ly(x = ~product_name, y = ~n, color = ~product_name, 
+          type = "bar", colors = "viridis")
+```
+
+
+
+
+
+
+
+

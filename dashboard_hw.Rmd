@@ -1,0 +1,62 @@
+---
+title: "dashboard_hw"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+```
+
+
+```{r}
+# 134 aisles
+load(file='instacart.rda')
+instacart %>% 
+  count(aisle) %>% 
+  filter(n > 10000) %>% 
+  arrange(desc(n))
+
+instacart_sub = 
+  instacart %>% 
+  filter(
+    aisle %in% c("fresh vegetables", "fresh fruits", "packaged vegetables fruits")) %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(rank = min_rank(desc(n))) %>% 
+  filter(rank < 4) %>% 
+  arrange(desc(n)) %>% 
+  as_tibble()
+
+```
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### scatterplot
+
+```{r}
+instacart_sub %>% 
+  mutate(product_name = fct_reorder(product_name, desc(n))) %>% 
+  plot_ly(x = ~product_name, y = ~n, color = ~aisle, 
+          type = "scatter", mode = "markers")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### barplot
+
+```{r}
+instacart_sub %>% 
+  mutate(product_name = fct_reorder(product_name, desc(n))) %>% 
+  plot_ly(x = ~product_name, y = ~n, color = ~product_name, 
+          type = "bar", colors = "viridis")
+```
+
+
