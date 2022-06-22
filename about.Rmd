@@ -1,0 +1,22 @@
+---
+title: "main_page"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+#  This page has some brief information about me
+
+My name is Yuen and I'm a data manager. 
+
+My goal is to become a data scientist in the medical field!
+
+
+
+
+
+
+
+

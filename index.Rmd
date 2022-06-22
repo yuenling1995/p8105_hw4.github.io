@@ -1,0 +1,31 @@
+---
+title: "main_page"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+library(flexdashboard)
+library(ggplot2)
+```
+
+#  This is a simple website I built for P8105 HW
+
+This is the main introductory page
+
+# Here is the link to "About Me" subpage
+
+[About Me](about.html)
+
+
+
+
+
+
